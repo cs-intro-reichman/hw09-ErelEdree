@@ -192,18 +192,16 @@ public class List {
      * index.
      */
     public ListIterator listIterator(int index) {
-        // If the list is empty, there is nothing to iterate
-        if (size == 0)
-            return null;
-
-        // Gets the element in position index of this list
-        Node current = first;
-        int i = 0;
-        while (i < index) {
-            current = current.next;
-            i++;
+        if (index < 0 || index > size) { // Note: it's common to allow an iterator at size (pointing to the end of the
+                                         // list)
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        // Returns an iterator that starts in that element
-        return new ListIterator(current);
+
+        Node current = first;
+        for (int i = 0; i < index && current != null; i++) {
+            current = current.next;
+        }
+
+        return new ListIterator(current); // Assumes ListIterator can handle a null current for end-of-list
     }
 }
