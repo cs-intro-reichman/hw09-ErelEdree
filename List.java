@@ -64,7 +64,7 @@ public class List {
         String toPrint = "";
         Node pointer = first;
         while (pointer.next != null) {
-            toPrint += pointer.cp.toString() + ",";
+            toPrint += pointer.cp.toString();
             pointer = pointer.next;
         }
         if (pointer.next == null) {
