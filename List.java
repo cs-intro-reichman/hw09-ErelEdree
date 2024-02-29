@@ -61,15 +61,16 @@ public class List {
     /** GIVE Textual representation of this list. */
     public String toString() {
         // Your code goes here
-        String toPrint = "";
+        String toPrint = "(";
         Node pointer = first;
         while (pointer.next != null) {
-            toPrint += pointer.cp.toString();
+            toPrint += pointer.cp.toString() + " ";
             pointer = pointer.next;
         }
         if (pointer.next == null) {
             toPrint += pointer.cp.toString();
         }
+        toPrint += ")";
         return toPrint;
     }
 
