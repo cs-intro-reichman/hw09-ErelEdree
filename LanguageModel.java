@@ -124,7 +124,7 @@ public class LanguageModel {
             initialText = initialText.substring(initialText.length() - windowLength);
         }
         str += initialText;
-        while (str.length() <= textLength) {
+        while (str.length() <= textLength + 5) {
             if (!CharDataMap.containsKey(initialText)) {
                 return str;
             }
