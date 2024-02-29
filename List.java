@@ -82,6 +82,9 @@ public class List {
         // Your code goes here
         Node testNode = first;
         int index = 0;
+        if (first == null) {
+            return -1;
+        }
         while (testNode.next != null) {
             if (testNode.cp.chr == chr) {
                 return index;
@@ -192,6 +195,7 @@ public class List {
         // If the list is empty, there is nothing to iterate
         if (size == 0)
             return null;
+
         // Gets the element in position index of this list
         Node current = first;
         int i = 0;
