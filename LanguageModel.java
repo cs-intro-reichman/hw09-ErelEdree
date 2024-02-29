@@ -45,7 +45,7 @@ public class LanguageModel {
         String window = "";
         while (!txtFile.isEmpty()) {
             c = txtFile.readChar();
-            if (window.length() < 4) {
+            if (window.length() < windowLength) {
                 window += c;
             } else {
                 if (CharDataMap.containsKey(window)) {
@@ -61,7 +61,6 @@ public class LanguageModel {
         }
         for (String windows : CharDataMap.keySet()) {
             calculateProbabilities(CharDataMap.get(windows));
-            System.out.println(windows + CharDataMap.get(windows));
         }
     }
 
@@ -94,7 +93,6 @@ public class LanguageModel {
         // Your code goes here
         double random_number = randomGenerator.nextDouble();
         int list_size = probs.getSize();
-        System.out.println("This is the random number: " + random_number);
         for (int i = 0; i < list_size; i++) {
             CharData rel_CD = probs.get(i);
             if (rel_CD.cp > random_number) {
@@ -123,7 +121,7 @@ public class LanguageModel {
             return initialText;
         }
         if (initialText.length() > windowLength) {
-            initialText = initialText.substring(initialText.length() - 4);
+            initialText = initialText.substring(initialText.length() - windowLength);
         }
         while (str.length() <= textLength) {
             if (!CharDataMap.containsKey(initialText)) {
@@ -132,6 +130,8 @@ public class LanguageModel {
             List probs = CharDataMap.get(initialText);
             char c = getRandomChar(probs);
             str += c;
+            initialText = initialText.substring(1);
+            initialText += c;
         }
         return str;
     }
@@ -148,21 +148,21 @@ public class LanguageModel {
 
     public static void main(String[] args) {
         // Your code goes here
-        LanguageModel my_new_model = new LanguageModel(0);
-        List myList = new List();
-        String str = "committee_";
-        for (int i = str.length() - 1; i >= 0; i--) {
-            if (i == str.length() - 1) {
-                myList.addFirst(str.charAt(i));
-            } else {
-                myList.update(str.charAt(i));
-            }
-        }
-        calculateProbabilities(myList);
-        System.out.println(myList);
-        char random_char = my_new_model.getRandomChar(myList);
-        System.out.println("random char = " + random_char);
-        my_new_model.train("test.txt");
-
+        int windowLength = Integer.parseInt(args[0]);
+        String initialText = args[1];
+        int generatedTextLength = Integer.parseInt(args[2]);
+        Boolean randomGeneration = args[3].equals("random");
+        String fileName = args[4];
+        // Create the LanguageModel object
+        LanguageModel lm;
+        if (randomGeneration)
+            lm = new LanguageModel(windowLength);
+        else
+            lm = new LanguageModel(windowLength, 20);
+        // Trains the model, creating the map.
+        lm.train(fileName);
+        // Generates text, and prints it.
+        System.out.println(lm.generate(initialText, generatedTextLength));
     }
+
 }
